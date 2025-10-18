@@ -128,6 +128,9 @@ export default (editor, opts = {}) => {
             const { editor } = this;
             const actions = document.createElement('div');
             actions.id = "actns";
+            actions.style.display = "flex";
+            actions.style.justifyContent = "space-between";
+            actions.style.marginTop = "16px";
             const btn = document.createElement('button');
             const pfx = editor.getConfig('stylePrefix');
             btn.innerHTML = opts.buttonLabel;
@@ -137,7 +140,7 @@ export default (editor, opts = {}) => {
             const runLogic = document.createElement('div');
             runLogic.id = "logic-toolbar";
             runLogic.className = "fa fa-bug";
-            runLogic.style = "margin:5px;padding:10px;background:rgba(0,0,0,0.2);border-radius:3px;border:1px solid rgba(0,0,0,0.2);cursor:pointer";
+            runLogic.style = "padding:10px;background:rgba(0,0,0,0.2);border-radius:3px;border:1px solid rgba(0,0,0,0.2);cursor:pointer";
             runLogic.onclick = () => this.runCode();
 
             actions.appendChild(runLogic);
