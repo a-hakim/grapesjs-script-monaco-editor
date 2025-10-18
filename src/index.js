@@ -1,4 +1,26 @@
 import commands from './commands';
+import * as monaco from 'monaco-editor';
+
+// Configure Monaco Editor workers for web environment
+if (typeof window !== 'undefined' && !window.MonacoEnvironment) {
+    window.MonacoEnvironment = {
+        getWorkerUrl: function (moduleId, label) {
+            if (label === 'json') {
+                return './vs/language/json/json.worker.js';
+            }
+            if (label === 'css' || label === 'scss' || label === 'less') {
+                return './vs/language/css/css.worker.js';
+            }
+            if (label === 'html' || label === 'handlebars' || label === 'razor') {
+                return './vs/language/html/html.worker.js';
+            }
+            if (label === 'typescript' || label === 'javascript') {
+                return './vs/language/typescript/ts.worker.js';
+            }
+            return './vs/editor/editor.worker.js';
+        }
+    };
+}
 
 export default (editor, opts = {}) => {
     const options = {
@@ -28,8 +50,18 @@ export default (editor, opts = {}) => {
             // Textarea label
             codeLabel: 'JS',
 
-            // Additional options for the code viewer, eg. `{ theme: 'hopscotch', readOnly: 0 }`
-            codeViewOptions: {},
+            // Monaco Editor options
+            monacoOptions: {
+                theme: 'vs-dark',
+                fontSize: 14,
+                wordWrap: 'on',
+                minimap: { enabled: false },
+                automaticLayout: true,
+                scrollBeyondLastLine: false,
+                folding: true,
+                lineNumbers: 'on',
+                language: 'javascript'
+            },
 
             // Label for the default save button
             buttonLabel: 'Save',

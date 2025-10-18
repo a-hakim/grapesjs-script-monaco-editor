@@ -1,7 +1,8 @@
-# Grapesjs Script Editor
+# Grapesjs Script Monaco Editor
 
-Attach script to selected component
+Attach script to selected component with Monaco Editor integration
 
+> Monaco Editor v5.4 integrated for enhanced JavaScript editing experience.
 > Try to add after all components.
 
 <p align="center">
@@ -14,7 +15,7 @@ Attach script to selected component
 ```html
 <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet">
 <script src="https://unpkg.com/grapesjs"></script>
-<script src="https://unpkg.com/grapesjs-script-editor"></script>
+<script src="dist/grapesjs-script-monaco-editor.min.js"></script>
 
 <div id="gjs"></div>
 ```
@@ -26,7 +27,20 @@ const editor = grapesjs.init({
   height: '100%',
   fromElement: true,
   storageManager: false,
-  plugins: ['grapesjs-script-editor'],
+  plugins: ['grapesjs-script-monaco-editor'],
+  pluginsOpts: {
+    'grapesjs-script-monaco-editor': {
+      // Monaco Editor specific options
+      monacoOptions: {
+        theme: 'vs-dark', // 'vs', 'vs-dark', 'hc-black'
+        fontSize: 14,
+        wordWrap: 'on',
+        minimap: { enabled: false },
+        folding: true,
+        lineNumbers: 'on'
+      }
+    }
+  }
 });
 ```
 
@@ -41,36 +55,58 @@ body, html {
 
 ## Summary
 
-* Plugin name: `grapesjs-script-editor`
+* Plugin name: `grapesjs-script-monaco-editor`
+* Integrates Monaco Editor v5.4 for enhanced JavaScript editing
 * Commands
     * `edit-script`
 
+## Features
+
+✨ **Monaco Editor Integration**: Full-featured code editor with syntax highlighting, IntelliSense, and error detection  
+🎨 **Multiple Themes**: Support for VS Code themes (vs, vs-dark, hc-black)  
+🔍 **Smart Features**: Code completion, bracket matching, folding, and find/replace  
+⚡ **Real-time Validation**: JavaScript syntax validation with inline error highlighting  
+📱 **Responsive**: Automatic layout adjustment and mobile-friendly design  
 
 ## Options
 
 | Option | Description | Default |
 |-|-|-
 | `starter` | Starter code | `let el = this` |
-| `toolbarIcon` | Toolbar icon for opening script modal | `<i class="fa fa-puzzle-piece"></i>` | 
-| `scriptTypesSupport` | Component types to allow script editing, `avoid components with predefined scripts or scripts set elsewhere` | `['default', 'wrapper', 'text', 'textnode', 'image', 'video', 'svg']` |
+| `toolbarIcon` | Toolbar icon for opening script modal | `<i class="fa fa-file-code-o"></i>` | 
+| `scriptTypesSupport` | Component types to allow script editing | `['default', 'wrapper', 'text', 'textnode', 'image', 'video', 'svg']` |
 | `toolbarBtnCustomScript` | Options to pass when extending toolbar | `{}` |
 | `onRun` | Logic to run if debug is successful | `() => console.log('valid syntax')` |
 | `onError` | Logic to run if debug finds errors | `err => console.log('error:',err)` |
 | `modalTitle` | Title for script modal | `Script` |
-| `codeViewOptions` | Additional options for the code viewer | `{}` |
-| `buttonLabel` | Label for the default save button | `save` |
+| `monacoOptions` | Monaco Editor configuration options | See Monaco Editor Options below |
+| `buttonLabel` | Label for the default save button | `Save` |
 | `commandAttachScript` | Object to extend the default `edit-script` command | `{}` |
+
+### Monaco Editor Options (`monacoOptions`)
+
+| Option | Description | Default |
+|-|-|-
+| `theme` | Editor theme: `'vs'`, `'vs-dark'`, `'hc-black'` | `'vs-dark'` |
+| `fontSize` | Font size in pixels | `14` |
+| `wordWrap` | Word wrap: `'on'`, `'off'`, `'wordWrapColumn'`, `'bounded'` | `'on'` |
+| `minimap.enabled` | Show/hide minimap | `false` |
+| `folding` | Enable code folding | `true` |
+| `lineNumbers` | Show line numbers: `'on'`, `'off'`, `'relative'`, `'interval'` | `'on'` |
+| `automaticLayout` | Automatically adjust layout | `true` |
+| `scrollBeyondLastLine` | Allow scrolling beyond last line | `false` |
+| `tabSize` | Tab size | `2` |
+| `insertSpaces` | Insert spaces instead of tabs | `true` |
 
 
 
 ## Download
 
-* CDN
-  * `https://unpkg.com/grapesjs-script-editor`
-* NPM
-  * `npm i grapesjs-script-editor`
+* Local Build
+  * Clone this repository and run `npm install && npm run build`
+  * Use `dist/grapesjs-script-monaco-editor.min.js`
 * GIT
-  * `git clone https://github.com/Ju99ernaut/grapesjs-script-editor.git`
+  * `git clone https://github.com/a-hakim/grapesjs-script-monaco-editor.git`
 
 
 
@@ -80,39 +116,48 @@ Directly in the browser
 ```html
 <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
 <script src="https://unpkg.com/grapesjs"></script>
-<script src="path/to/grapesjs-script-editor.min.js"></script>
+<script src="dist/grapesjs-script-monaco-editor.min.js"></script>
 
 <div id="gjs"></div>
 
 <script type="text/javascript">
   var editor = grapesjs.init({
       container: '#gjs',
-      // ...
-      plugins: ['grapesjs-script-editor'],
+      height: '100%',
+      plugins: ['grapesjs-script-monaco-editor'],
       pluginsOpts: {
-        'grapesjs-script-editor': { /* options */ }
+        'grapesjs-script-monaco-editor': {
+          monacoOptions: {
+            theme: 'vs-dark',
+            fontSize: 16,
+            wordWrap: 'on',
+            minimap: { enabled: true }
+          }
+        }
       }
   });
 </script>
 ```
 
-Modern javascript
+Modern javascript (ES6 Modules)
 ```js
 import grapesjs from 'grapesjs';
-import plugin from 'grapesjs-script-editor';
+import plugin from './dist/grapesjs-script-monaco-editor.min.js';
 import 'grapesjs/dist/css/grapes.min.css';
 
 const editor = grapesjs.init({
   container : '#gjs',
-  // ...
+  height: '100%',
   plugins: [plugin],
   pluginsOpts: {
-    [plugin]: { /* options */ }
+    [plugin]: {
+      monacoOptions: {
+        theme: 'vs-dark',
+        fontSize: 14,
+        automaticLayout: true
+      }
+    }
   }
-  // or
-  plugins: [
-    editor => plugin(editor, { /* options */ }),
-  ],
 });
 ```
 

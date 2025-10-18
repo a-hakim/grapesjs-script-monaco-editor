@@ -1,23 +1,36 @@
 {
-  "name": "grapesjs-script-editor",
-  "version": "1.0.3",
-  "description": "Grapesjs Script Editor",
-  "main": "dist/grapesjs-script-editor.min.js",
+  "name": "grapesjs-script-monaco-editor",
+  "version": "2.0.0",
+  "description": "GrapesJS Script Editor with Monaco Editor Integration",
+  "main": "dist/grapesjs-script-monaco-editor.min.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Ju99ernaut/grapesjs-script-editor.git"
   },
   "scripts": {
-    "start": "grapesjs-cli serve",
-    "build": "grapesjs-cli build",
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "build-old": "grapesjs-cli build",
     "bump": "npm version patch -m 'Bump v%s'"
   },
   "keywords": [
     "grapesjs",
     "plugin"
   ],
+  "dependencies": {
+    "monaco-editor": "^0.54.0"
+  },
   "devDependencies": {
-    "grapesjs-cli": "^1.0.12"
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "babel-loader": "^9.1.0",
+    "css-loader": "^6.8.0",
+    "file-loader": "^6.2.0",
+    "grapesjs-cli": "^1.0.12",
+    "monaco-editor-webpack-plugin": "^7.1.0",
+    "style-loader": "^3.3.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0"
   },
   "license": "MIT"
 }
