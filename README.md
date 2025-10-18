@@ -1,15 +1,38 @@
-# Grapesjs Script Monaco Editor
+# GrapesJS Script Editor with Monaco Editor
 
 Attach script to selected component with Monaco Editor integration
 
-> Monaco Editor v5.4 integrated for enhanced JavaScript editing experience.
-> Try to add after all components.
+This plugin adds the possibility to attach JavaScript code to any component with the powerful Monaco Editor (the same editor that powers VS Code).
 
 <p align="center">
   <img src="screenshot.png" alt="screenshot.png">
 </p>
 
 [DEMO](https://codepen.io/ju99ernaut/pen/NWNEWpV)
+
+## Features
+- **Zero External Dependencies** - Monaco Editor loads automatically from CDN
+- **Instant Setup** - Just add the plugin to GrapesJS and you're ready to go
+- **No Manual Configuration** - Monaco Editor initializes seamlessly
+- **Single Package** - Everything you need in one plugin
+- **Rich Syntax Highlighting** - JavaScript syntax highlighting with error detection
+- **IntelliSense** - Intelligent code completion and validation
+- **Themes** - Multiple built-in themes (VS Dark, VS Light, High Contrast)
+- **Advanced Editing** - Multi-cursor support, find and replace, code folding, and more
+- **Performance** - Optimized for large files and better rendering performance
+- **Accessibility** - Better screen reader support and keyboard navigation
+
+> Requires GrapesJS v0.14.25 or higher
+
+## Quick Start
+
+```javascript
+// That's it! Monaco Editor loads automatically
+grapesjs.init({
+  container: '#gjs',
+  plugins: ['grapesjs-script-monaco-editor']
+});
+```
 
 ### HTML
 ```html
@@ -23,14 +46,14 @@ Attach script to selected component with Monaco Editor integration
 ### JS
 ```js
 const editor = grapesjs.init({
-	container: '#gjs',
+  container: '#gjs',
   height: '100%',
   fromElement: true,
   storageManager: false,
   plugins: ['grapesjs-script-monaco-editor'],
   pluginsOpts: {
     'grapesjs-script-monaco-editor': {
-      // Monaco Editor specific options
+      // Monaco Editor loads automatically with these options
       monacoOptions: {
         theme: 'vs-dark', // 'vs', 'vs-dark', 'hc-black'
         fontSize: 14,
@@ -38,6 +61,10 @@ const editor = grapesjs.init({
         minimap: { enabled: false },
         folding: true,
         lineNumbers: 'on'
+      },
+      // Monaco Loader configuration (optional)
+      monacoLoaderOptions: {
+        version: '0.54.0'  // Specify Monaco Editor version
       }
     }
   }
@@ -52,11 +79,10 @@ body, html {
 }
 ```
 
-
 ## Summary
 
 * Plugin name: `grapesjs-script-monaco-editor`
-* Integrates Monaco Editor v5.4 for enhanced JavaScript editing
+* Integrates Monaco Editor with automatic CDN loading
 * Commands
     * `edit-script`
 
@@ -67,6 +93,7 @@ body, html {
 🔍 **Smart Features**: Code completion, bracket matching, folding, and find/replace  
 ⚡ **Real-time Validation**: JavaScript syntax validation with inline error highlighting  
 📱 **Responsive**: Automatic layout adjustment and mobile-friendly design  
+🚀 **CDN Loading**: Automatic Monaco Editor loading from CDN without manual setup
 
 ## Options
 
@@ -79,7 +106,8 @@ body, html {
 | `onRun` | Logic to run if debug is successful | `() => console.log('valid syntax')` |
 | `onError` | Logic to run if debug finds errors | `err => console.log('error:',err)` |
 | `modalTitle` | Title for script modal | `Script` |
-| `monacoOptions` | Monaco Editor configuration options | See Monaco Editor Options below |
+| `monacoOptions` | **New:** Monaco Editor specific options (see below) | `{ theme: 'vs-dark', language: 'javascript', ... }` |
+| `monacoLoaderOptions` | **New:** Monaco Editor loading configuration | `{ version: '0.54.0' }` |
 | `buttonLabel` | Label for the default save button | `Save` |
 | `commandAttachScript` | Object to extend the default `edit-script` command | `{}` |
 
@@ -96,102 +124,25 @@ body, html {
 | `automaticLayout` | Automatically adjust layout | `true` |
 | `scrollBeyondLastLine` | Allow scrolling beyond last line | `false` |
 | `tabSize` | Tab size | `2` |
-| `insertSpaces` | Insert spaces instead of tabs | `true` |
 
+### Monaco Loader Options (`monacoLoaderOptions`)
 
-
-## Download
-
-* Local Build
-  * Clone this repository and run `npm install && npm run build`
-  * Use `dist/grapesjs-script-monaco-editor.min.js`
-* GIT
-  * `git clone https://github.com/a-hakim/grapesjs-script-monaco-editor.git`
-
-
-
-## Usage
-
-Directly in the browser
-```html
-<link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
-<script src="https://unpkg.com/grapesjs"></script>
-<script src="dist/grapesjs-script-monaco-editor.min.js"></script>
-
-<div id="gjs"></div>
-
-<script type="text/javascript">
-  var editor = grapesjs.init({
-      container: '#gjs',
-      height: '100%',
-      plugins: ['grapesjs-script-monaco-editor'],
-      pluginsOpts: {
-        'grapesjs-script-monaco-editor': {
-          monacoOptions: {
-            theme: 'vs-dark',
-            fontSize: 16,
-            wordWrap: 'on',
-            minimap: { enabled: true }
-          }
-        }
-      }
-  });
-</script>
-```
-
-Modern javascript (ES6 Modules)
-```js
-import grapesjs from 'grapesjs';
-import plugin from './dist/grapesjs-script-monaco-editor.min.js';
-import 'grapesjs/dist/css/grapes.min.css';
-
-const editor = grapesjs.init({
-  container : '#gjs',
-  height: '100%',
-  plugins: [plugin],
-  pluginsOpts: {
-    [plugin]: {
-      monacoOptions: {
-        theme: 'vs-dark',
-        fontSize: 14,
-        automaticLayout: true
-      }
-    }
-  }
-});
-```
-
-
+| Option | Description | Default |
+|-|-|-
+| `version` | Monaco Editor version to load from CDN | `'0.54.0'` |
+| `baseUrl` | Custom base URL for Monaco Editor | `https://unpkg.com/monaco-editor@{version}/min/vs` |
 
 ## Development
 
-Clone the repository
-
-```sh
-$ git clone https://github.com/Ju99ernaut/grapesjs-script-editor.git
-$ cd grapesjs-script-editor
+### Build
+```bash
+npm run build
 ```
 
-Install dependencies
-
-```sh
-$ npm i
+### Start Development Server
+```bash
+npm start
 ```
 
-Start the dev server
-
-```sh
-$ npm start
-```
-
-Build the source
-
-```sh
-$ npm run build
-```
-
-
-
-## License
-
-MIT
+### Dependencies
+This plugin now uses `grapesjs-cli` for building and development, following the same pattern as other modern GrapesJS plugins. Monaco Editor is loaded automatically from CDN, eliminating the need for webpack configuration or monaco-editor-webpack-plugin.
