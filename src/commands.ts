@@ -109,6 +109,8 @@ export default (editor: any, opts: PluginOptions = {}) => {
         this.codeViewer = null;
         this.monacoEditor = null;
       }
+      // Clear content cache to force recreation on next open
+      content = null;
       md.close();
     },
 
@@ -120,18 +122,44 @@ export default (editor: any, opts: PluginOptions = {}) => {
       const title = options.title || modalTitle;
       
       try {
-        // Load Monaco Editor
+        // Load Monaco Editor first
         await monacoLoader.load(monacoLoaderOptions);
         
-        if (!content) content = this.getContent();
+        // Make sure Monaco is available
+        if (!monacoLoader.isMonacoLoaded()) {
+          throw new Error('Monaco Editor failed to load properly');
+        }
+        
+        // Always create fresh content to avoid DOM attachment issues
+        content = this.getContent();
         let code = target.getScriptString() || starter;
         
-        md.open({
+        // Open modal first
+        const modal = md.open({
           title,
           content
-        }).getModel().once('change:open', () => editor.stopCommand(this.id));
+        });
         
-        this.getCodeViewer().setContent(code);
+        // Set up close handler
+        modal.getModel().once('change:open', () => editor.stopCommand(this.id));
+        
+        // Wait for modal to be fully rendered, then initialize Monaco
+        setTimeout(() => {
+          try {
+            const codeViewer = this.getCodeViewer();
+            if (codeViewer) {
+              codeViewer.setContent(code);
+              // Give Monaco a bit more time to render
+              setTimeout(() => {
+                codeViewer.refresh();
+                codeViewer.focus();
+              }, 100);
+            }
+          } catch (error) {
+            console.error('Error initializing Monaco editor:', error);
+          }
+        }, 300);
+        
       } catch (error) {
         console.error('Failed to load Monaco Editor:', error);
         editor.trigger('monaco:load-error', error);
@@ -182,13 +210,6 @@ export default (editor: any, opts: PluginOptions = {}) => {
       
       appendToContent(content, this.getPreContent());
       const codeViewer = this.getCodeViewer();
-      
-      // Use setTimeout to ensure Monaco Editor renders properly after DOM insertion
-      setTimeout(() => {
-        codeViewer.refresh();
-        codeViewer.focus();
-      }, 100);
-      
       content.appendChild(codeViewer.getElement());
       appendToContent(content, this.getPostContent());
       appendToContent(content, this.getContentActions());
@@ -248,6 +269,8 @@ export default (editor: any, opts: PluginOptions = {}) => {
             throw new Error('Monaco Editor not loaded');
           }
 
+          console.log('Creating new Monaco Editor instance...');
+
           // Create Monaco Editor container
           const container = document.createElement('div');
           container.style.height = '400px';
@@ -282,6 +305,7 @@ export default (editor: any, opts: PluginOptions = {}) => {
           
           // Initialize Monaco Editor
           this.monacoEditor = monaco.editor.create(container, monacoConfig);
+          console.log('Monaco Editor created successfully');
 
           // Add JavaScript completion and validation
           monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
@@ -294,6 +318,7 @@ export default (editor: any, opts: PluginOptions = {}) => {
             getElement: () => container,
             setContent: (code: string) => {
               if (this.monacoEditor) {
+                console.log('Setting Monaco Editor content:', code?.substring(0, 50) + '...');
                 this.monacoEditor.setValue(code || '');
               }
             },
@@ -302,16 +327,19 @@ export default (editor: any, opts: PluginOptions = {}) => {
             },
             refresh: () => {
               if (this.monacoEditor) {
+                console.log('Refreshing Monaco Editor layout');
                 setTimeout(() => this.monacoEditor.layout(), 0);
               }
             },
             focus: () => {
               if (this.monacoEditor) {
+                console.log('Focusing Monaco Editor');
                 this.monacoEditor.focus();
               }
             },
             dispose: () => {
               if (this.monacoEditor) {
+                console.log('Disposing Monaco Editor');
                 this.monacoEditor.dispose();
                 this.monacoEditor = null;
               }
