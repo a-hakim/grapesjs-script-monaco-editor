@@ -371,6 +371,12 @@ export default (editor: any, opts: PluginOptions = {}) => {
         const code = this.getCodeViewer().getContent();
         const monaco = monacoLoader.getMonaco();
         
+        // Check if code is empty or only whitespace
+        if (!code || code.trim().length === 0) {
+          const error = new Error('Code is empty. Please write some JavaScript code.');
+          throw error;
+        }
+        
         // Basic syntax validation using Monaco's built-in validation
         if (this.monacoEditor && monaco && monaco.languages) {
           // Get model markers (errors/warnings)
@@ -381,14 +387,21 @@ export default (editor: any, opts: PluginOptions = {}) => {
             const errors = markers.filter((m: any) => m.severity === monaco.MarkerSeverity.Error);
             if (errors.length > 0) {
               const error = new Error(`Syntax Error: ${errors[0].message} at line ${errors[0].startLineNumber}`);
-              throw error;
+              alert(`Syntax Error: ${errors[0].message} at line ${errors[0].startLineNumber}`);
+              // throw error;
             }
           }
         }
         
         // Test code execution in a safe context
-        const testFunction = new Function('"use strict"; return function() { ' + code + ' }');
-        testFunction();
+        // Wrap the code in a way that preserves its structure
+        try {
+          const testFunction = new Function('"use strict";\n' + code);
+          // Don't execute, just validate syntax
+          alert('No syntax errors detected.');
+        } catch (syntaxError: any) {
+          throw new Error(`Syntax Error: ${syntaxError.message}`);
+        }
         
         onRun && onRun();
       } catch (err: any) {
