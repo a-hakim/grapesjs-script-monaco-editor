@@ -269,8 +269,6 @@ export default (editor: any, opts: PluginOptions = {}) => {
             throw new Error('Monaco Editor not loaded');
           }
 
-          console.log('Creating new Monaco Editor instance...');
-
           // Create Monaco Editor container
           const container = document.createElement('div');
           container.style.height = '400px';
@@ -305,7 +303,6 @@ export default (editor: any, opts: PluginOptions = {}) => {
           
           // Initialize Monaco Editor
           this.monacoEditor = monaco.editor.create(container, monacoConfig);
-          console.log('Monaco Editor created successfully');
 
           // Add JavaScript completion and validation
           monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
@@ -318,7 +315,6 @@ export default (editor: any, opts: PluginOptions = {}) => {
             getElement: () => container,
             setContent: (code: string) => {
               if (this.monacoEditor) {
-                console.log('Setting Monaco Editor content:', code?.substring(0, 50) + '...');
                 this.monacoEditor.setValue(code || '');
               }
             },
@@ -327,19 +323,16 @@ export default (editor: any, opts: PluginOptions = {}) => {
             },
             refresh: () => {
               if (this.monacoEditor) {
-                console.log('Refreshing Monaco Editor layout');
                 setTimeout(() => this.monacoEditor.layout(), 0);
               }
             },
             focus: () => {
               if (this.monacoEditor) {
-                console.log('Focusing Monaco Editor');
                 this.monacoEditor.focus();
               }
             },
             dispose: () => {
               if (this.monacoEditor) {
-                console.log('Disposing Monaco Editor');
                 this.monacoEditor.dispose();
                 this.monacoEditor = null;
               }
@@ -397,7 +390,6 @@ export default (editor: any, opts: PluginOptions = {}) => {
         const testFunction = new Function('"use strict"; return function() { ' + code + ' }');
         testFunction();
         
-        console.log("Script validation passed");
         onRun && onRun();
       } catch (err: any) {
         console.error("Script validation error:", err);
