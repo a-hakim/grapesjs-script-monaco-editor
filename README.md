@@ -7,10 +7,6 @@ This plugin adds the possibility to attach JavaScript code to any component with
 ![GrapesJS Script Editor with Monaco Editor](https://raw.githubusercontent.com/a-hakim/grapesjs-script-monaco-editor/master/preview.png)
 
 ## Features
-- **Zero External Dependencies** - Monaco Editor loads automatically from CDN
-- **Instant Setup** - Just add the plugin to GrapesJS and you're ready to go
-- **No Manual Configuration** - Monaco Editor initializes seamlessly
-- **Single Package** - Everything you need in one plugin
 - **Rich Syntax Highlighting** - JavaScript syntax highlighting with error detection
 - **IntelliSense** - Intelligent code completion and validation
 - **Themes** - Multiple built-in themes (VS Dark, VS Light, High Contrast)
