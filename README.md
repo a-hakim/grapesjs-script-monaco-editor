@@ -4,11 +4,7 @@ Attach script to selected component with Monaco Editor integration
 
 This plugin adds the possibility to attach JavaScript code to any component with the powerful Monaco Editor (the same editor that powers VS Code).
 
-<p align="center">
-  <img src="screenshot.png" alt="screenshot.png">
-</p>
-
-[DEMO](https://codepen.io/ju99ernaut/pen/NWNEWpV)
+![GrapesJS Script Editor with Monaco Editor](https://raw.githubusercontent.com/a-hakim/grapesjs-script-monaco-editor/master/preview.png)
 
 ## Features
 - **Zero External Dependencies** - Monaco Editor loads automatically from CDN
