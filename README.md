@@ -71,22 +71,6 @@ body, html {
 }
 ```
 
-## Summary
-
-* Plugin name: `grapesjs-script-monaco-editor`
-* Integrates Monaco Editor with automatic CDN loading
-* Commands
-    * `edit-script`
-
-## Features
-
-✨ **Monaco Editor Integration**: Full-featured code editor with syntax highlighting, IntelliSense, and error detection  
-🎨 **Multiple Themes**: Support for VS Code themes (vs, vs-dark, hc-black)  
-🔍 **Smart Features**: Code completion, bracket matching, folding, and find/replace  
-⚡ **Real-time Validation**: JavaScript syntax validation with inline error highlighting  
-📱 **Responsive**: Automatic layout adjustment and mobile-friendly design  
-🚀 **CDN Loading**: Automatic Monaco Editor loading from CDN without manual setup
-
 ## Options
 
 | Option | Description | Default |
@@ -135,6 +119,3 @@ npm run build
 ```bash
 npm start
 ```
-
-### Dependencies
-This plugin now uses `grapesjs-cli` for building and development, following the same pattern as other modern GrapesJS plugins. Monaco Editor is loaded automatically from CDN, eliminating the need for webpack configuration or monaco-editor-webpack-plugin.
